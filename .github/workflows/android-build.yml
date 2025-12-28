@@ -1,21 +1,48 @@
-[app]
-title = IRIS Pics
-package.name = irispics
-package.domain = org.emergentmindworks
+name: Build Android AAB
 
-source.dir = .
-source.include_exts = py
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
-version = 0.1
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-requirements = python3,kivy,pillow
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-orientation = portrait
-fullscreen = 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
 
-entrypoint = python3
-entrypoint.args = pics.py
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            zip unzip openjdk-17-jdk \
+            python3-pip \
+            build-essential \
+            libffi-dev \
+            libssl-dev \
+            autoconf \
+            automake \
+            libtool
 
-[buildozer]
-log_level = 2
-warn_on_root = 1
+      - name: Install Buildozer
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython
+
+      - name: Build Android AAB
+        run: |
+          buildozer android release
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-build
+          path: bin/*.aab
