@@ -1,47 +1,53 @@
 [app]
 
-# App name
+# ---- App identity ----
 title = IRIS Pics
-
-# Package identifiers (must be lowercase)
 package.name = irispics
 package.domain = org.emergentmindworks
 
-# Version (THIS FIXES YOUR ERROR)
+# REQUIRED — this fixes your exact error
 version = 0.1
 
-# Source
+# ---- Source ----
 source.dir = .
 source.include_exts = py
 
-# Entry point
-entrypoint = main.py
-
-# Python & libs
+# ---- Python requirements ----
 requirements = python3,kivy,pillow
 
-# Screen
+# ---- Entry point ----
+# main.py must exist and start the Kivy App
+entrypoint = main.py
+
+# ---- Display ----
 orientation = portrait
 fullscreen = 0
 
-# Permissions (none needed yet)
-android.permissions =
-
-# Android API targets (safe defaults)
+# ---- Android SDK / NDK ----
 android.api = 33
 android.minapi = 21
-android.sdk = 24
 android.ndk = 25b
+android.sdk = 33
 
-# Build options
-android.private_storage = True
-android.allow_backup = True
+# ---- Architectures ----
+android.arch = arm64-v8a
 
-# Architecture
-android.archs = arm64-v8a
+# ---- Permissions (none needed yet) ----
+android.permissions =
 
-# Logcat (optional but helpful)
+# ---- Logging (helps debugging in Actions) ----
 log_level = 2
 
-# Disable unnecessary features
+# ---- Disable things that break CI ----
 android.accept_sdk_license = True
+android.enable_androidx = True
+
+# ---- Packaging sanity ----
+copy_libs = True
+ignore_setup_py = True
+
+# ---- Build performance ----
+android.skip_update = False
+android.private_storage = False
+
+# ---- END ----
