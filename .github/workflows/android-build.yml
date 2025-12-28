@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -19,30 +19,41 @@ jobs:
         with:
           python-version: "3.10"
 
-      - name: Install system dependencies
+      - name: Install system dependencies (SDL2 + Android)
         run: |
           sudo apt update
           sudo apt install -y \
-            zip unzip openjdk-17-jdk \
+            zip unzip git \
+            openjdk-17-jdk \
             python3-pip \
             build-essential \
             libffi-dev \
             libssl-dev \
-            autoconf \
-            automake \
-            libtool
+            zlib1g-dev \
+            libgl1-mesa-dev \
+            libgles2-mesa-dev \
+            libsdl2-dev \
+            libsdl2-image-dev \
+            libsdl2-mixer-dev \
+            libsdl2-ttf-dev \
+            libjpeg-dev \
+            libpng-dev
 
-      - name: Install Buildozer
+      - name: Install Buildozer and Python tools
         run: |
           pip install --upgrade pip
           pip install buildozer cython
+
+      - name: Clean previous build artifacts
+        run: |
+          buildozer android clean || true
 
       - name: Build Android AAB
         run: |
           buildozer android release
 
-      - name: Upload artifact
+      - name: Upload AAB artifact
         uses: actions/upload-artifact@v4
         with:
-          name: android-build
+          name: irispics-aab
           path: bin/*.aab
