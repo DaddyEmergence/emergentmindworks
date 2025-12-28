@@ -2,11 +2,12 @@
 title = IRIS Pics
 package.name = irispics
 package.domain = org.emergentmindworks
+version = 0.1
 
 source.dir = .
 source.include_exts = py
 
-requirements = python3,pillow
+requirements = python3,kivy,pillow
 
 orientation = portrait
 fullscreen = 0
@@ -19,3 +20,7 @@ android.sdk = 33
 android.ndk = 25b
 
 android.release_artifact = aab
+
+[buildozer]
+log_level = 2
+warn_on_root = 1
